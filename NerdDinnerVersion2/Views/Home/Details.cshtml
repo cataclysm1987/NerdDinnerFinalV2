@@ -1,0 +1,80 @@
+﻿@using PagedList.Mvc
+@model NerdDinnerVersion2.Models.DinnerDetailsViewModel
+
+@{
+    ViewBag.Title = "Details";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>Dinner</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Dinner.Title)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Dinner.Title)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Dinner.EventDate)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Dinner.EventDate)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Dinner.Address)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Dinner.Address)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Dinner.HostedBy)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Dinner.HostedBy)
+        </dd>
+
+    </dl>
+</div>
+
+
+<h3>This dinner has @Model.RSVPCount attendees that have RSVP'd</h3>
+<table class="table">
+    <tr>
+        <th>
+            RSVP Attendee E-mail
+        </th>
+        <th></th>
+    </tr>
+
+    @foreach (var item in Model.RSVPs)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.AttendeeEmail)
+            </td>
+        </tr>
+    }
+
+</table>
+<br />
+Page @(Model.RSVPs.PageCount < Model.RSVPs.PageNumber ? 0 : Model.RSVPs.PageNumber) of @Model.RSVPs.PageCount
+
+@Html.PagedListPager(Model.RSVPs, page => Url.Action("Details", "Home",
+    new { page, sortOrder = ViewBag.CurrentSort, currentFilter = ViewBag.CurrentFilter }))
+
+
+<p>
+    @Html.ActionLink("RSVP to This Dinner", "RSVP", "Home", new { id = Model.Dinner.DinnerId }, null) |
+    @Html.ActionLink("Back to List", "Index")
+</p>
